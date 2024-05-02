@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import Cast from './Cast/Cast';
@@ -13,7 +13,7 @@ const MovieDetails = () => {
   const [showReviews, setShowReviews] = useState(false);
 
   // Función para obtener los detalles de la película
-  const fetchMovieDetails = async () => {
+  const fetchMovieDetails = useCallback(async () => {
     try {
       const apiKey = 'f363c7f847ff3862e66e9336f55534d2';
       const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
@@ -23,11 +23,11 @@ const MovieDetails = () => {
     } catch (error) {
       console.error('Error fetching movie details:', error);
     }
-  };
+  }, [movieId]); // Añade movieId a las dependencias de useCallback
 
   useEffect(() => {
     fetchMovieDetails();
-  }, [movieId]); // Se ejecuta una vez al montar el componente
+  }, [fetchMovieDetails]); // Se ejecuta una vez al montar el componente y cada vez que fetchMovieDetails cambia
 
   if (!movieDetails) {
     return <div>Loading...</div>;
