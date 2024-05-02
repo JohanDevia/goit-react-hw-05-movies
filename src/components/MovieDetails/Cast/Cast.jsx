@@ -24,7 +24,7 @@ const Cast = ({ movieId: propMovieId }) => {
 
   useEffect(() => {
     fetchCast();
-  }, [movieId]); // Se ejecuta una vez al montar el componente
+  }, [movieId, fetchCast]); // Se ejecuta una vez al montar el componente y cada vez que movieId o fetchCast cambian
 
   return (
     <ul>
