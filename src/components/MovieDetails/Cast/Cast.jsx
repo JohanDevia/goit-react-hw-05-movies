@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const Cast = ({ movieId: propMovieId }) => {
   const [cast, setCast] = useState([]);
 
   // Función para obtener el reparto de la película
-  const fetchCast = async () => {
+  const fetchCast = useCallback(async () => {
     try {
       const apiKey = 'f363c7f847ff3862e66e9336f55534d2';
       const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
@@ -20,11 +20,11 @@ const Cast = ({ movieId: propMovieId }) => {
     } catch (error) {
       console.error('Error fetching cast:', error);
     }
-  };
+  }, [movieId]); // Añade movieId a las dependencias de useCallback
 
   useEffect(() => {
     fetchCast();
-  }, [movieId, fetchCast]); // Se ejecuta una vez al montar el componente y cada vez que movieId o fetchCast cambian
+  }, [fetchCast]); // Se ejecuta una vez al montar el componente y cada vez que fetchCast cambia
 
   return (
     <ul>
