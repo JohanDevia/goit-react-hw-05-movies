@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const Reviews = ({ movieId: propMovieId }) => {
   const [reviews, setReviews] = useState([]);
 
   // Función para obtener las críticas de la película
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const apiKey = 'f363c7f847ff3862e66e9336f55534d2';
       const reviewsUrl = `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}`;
@@ -20,11 +20,11 @@ const Reviews = ({ movieId: propMovieId }) => {
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
-  };
+  }, [movieId]); // Añade movieId a las dependencias de useCallback
 
   useEffect(() => {
     fetchReviews();
-  }, [movieId]); // Se ejecuta una vez al montar el componente
+  }, [fetchReviews]); // Se ejecuta una vez al montar el componente y cada vez que fetchReviews cambia
 
   return (
     <ul>
