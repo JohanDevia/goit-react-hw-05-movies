@@ -19,7 +19,7 @@ const Reviews = lazy(() =>
 
 function App() {
   return (
-    <Router>
+    <Router basename="/goit-react-hw-05-movies/">
       <AppBar />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
